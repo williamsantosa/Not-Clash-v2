@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/williamsantosa/Not-Clash-v2#readme",
   "dependencies": {
-    "discord.js": "^14.7.1"
+    "discord.js": "^14.7.1",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "eslint": "^8.31.0"
