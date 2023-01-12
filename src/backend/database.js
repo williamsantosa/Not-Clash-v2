@@ -113,7 +113,7 @@ const getPlayer = (dbPath, discordid, attribute) => {
  * @param {String} discordid 
  * @returns {value}
  */
-function getAllPlayer(dbPath, discordid) {
+const getAllPlayer = (dbPath, discordid) => {
   let db = accessDB(dbPath);
   return new Promise((resolve, reject) => {
 		db.serialize(() => {
