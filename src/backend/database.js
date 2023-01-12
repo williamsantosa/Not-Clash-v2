@@ -42,6 +42,11 @@ function createDB(dbPath) {
   db.close();
 }
 
+/**
+ * Accesses the database
+ * @param {String} dbPath 
+ * @returns 
+ */
 const accessDB = (dbPath) => {
   return new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
@@ -52,6 +57,12 @@ const accessDB = (dbPath) => {
   });
 }
 
+
+/**
+ * Registers player to the database
+ * @param {String} dbPath 
+ * @param {String} discordid 
+ */
 const registerPlayer = (dbPath, discordid) => {
   let db = accessDB(dbPath);
   db.exec(
@@ -61,6 +72,13 @@ const registerPlayer = (dbPath, discordid) => {
   db.close();
 }
 
+/**
+ * Modifies player entry
+ * @param {String} dbPath 
+ * @param {String} discordid 
+ * @param {String} attribute 
+ * @param {Number} value 
+ */
 const modifyPlayer = (dbPath, discordid, attribute, value) => {
   let db = accessDB(dbPath);
   db.exec(
@@ -70,6 +88,13 @@ const modifyPlayer = (dbPath, discordid, attribute, value) => {
   db.close();
 }
 
+/**
+ * Gets player entry for attribute
+ * @param {String} dbPath 
+ * @param {String} discordid 
+ * @param {String} attribute 
+ * @return {value}
+ */
 const getPlayer = (dbPath, discordid, attribute) => {
   const db = accessDB(dbPath);
   return new Promise((resolve, reject) => {
@@ -82,6 +107,12 @@ const getPlayer = (dbPath, discordid, attribute) => {
 	});
 }
 
+/**
+ * Gets player entry
+ * @param {String} dbPath 
+ * @param {String} discordid 
+ * @returns {value}
+ */
 function getAllPlayer(dbPath, discordid) {
   let db = accessDB(dbPath);
   return new Promise((resolve, reject) => {
