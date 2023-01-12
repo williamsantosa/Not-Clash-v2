@@ -4,6 +4,6 @@ module.exports = {
 	name: Events.ClientReady,
 	once: true,
 	execute(client) {
-		console.log(`Ready! Logged in as ${client.user.tag}`);
+		console.log(`Not Clash v2 bot ready! Logged in as ${client.user.tag}.`);
 	},
 };
