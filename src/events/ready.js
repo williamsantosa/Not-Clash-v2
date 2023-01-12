@@ -7,7 +7,7 @@ module.exports = {
 	name: Events.ClientReady,
 	once: true,
 	execute(client) {
-		const dbPath = normalize('./data.db');
+		const dbPath = normalize('./src/backend/data.db');
 		if (!existsSync(dbPath)) {
 			database.createDB(dbPath);
 		}
