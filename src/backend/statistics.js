@@ -54,6 +54,11 @@ const teamSort = (players, n) => {
   return teams;
 };
 
+
+
 module.exports = {
-  
+  probabilityWinning: (t0, t1, D) => probabilityWinning(t0, t1, D),
+  pConfidence: (n) => pConfidence(n),
+  eloRating: (t0, t1, D, K, w) => eloRating(t0, t1, D, K, w),
+  teamSort: (players, n) => teamSort(players, n),
 };
