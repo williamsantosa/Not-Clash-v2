@@ -1,5 +1,7 @@
 const sqlite3 = require('sqlite3');
 
+// Basic Database Functions
+
 /**
  * Creates the sqlite3 database.
  * @param {String} dbPath 
@@ -14,6 +16,8 @@ function createDB(dbPath) {
     console.log(`Succesfully created ${dbPath}.`);
   });
 
+  // player# is stored as JSON string with properties 
+  // {discordid: string, team: int, role: int, elochange: int}
   db.exec(`
   CREATE TABLE players (
     discordid TEXT NOT NULL PRIMARY KEY, 
@@ -25,16 +29,16 @@ function createDB(dbPath) {
   );
   CREATE TABLE matches (
     matchid TEXT NOT NULL PRIMARY KEY,
-    discordid1 BIGINT NOT NULL,
-    discordid2 BIGINT NOT NULL,
-    discordid3 BIGINT NOT NULL,
-    discordid4 BIGINT NOT NULL,
-    discordid5 BIGINT NOT NULL,
-    discordid6 BIGINT NOT NULL,
-    discordid7 BIGINT NOT NULL,
-    discordid8 BIGINT NOT NULL,
-    discordid9 BIGINT NOT NULL,
-    discordid10 BIGINT NOT NULL
+    player0 TEXT NOT NULL,
+    player1 TEXT NOT NULL,
+    player2 TEXT NOT NULL,
+    player3 TEXT NOT NULL,
+    player4 TEXT NOT NULL,
+    player5 TEXT NOT NULL,
+    player6 TEXT NOT NULL,
+    player7 TEXT NOT NULL,
+    player8 TEXT NOT NULL,
+    player9 TEXT NOT NULL
   );
   `, (err) => {if (err) console.error(err);}
   );
@@ -57,6 +61,7 @@ const accessDB = (dbPath) => {
   });
 }
 
+// Player Functions
 
 /**
  * Registers player to the database
@@ -125,6 +130,80 @@ const getAllPlayer = (dbPath, discordid) => {
 	});
 }
 
+// Matches Function
+
+/**
+ * Registers match to the database
+ * @param {String} dbPath 
+ * @param {String} matchid 
+ * @param {Array[String]} players 
+ */
+const registerMatch = (dbPath, matchid, players) => {
+  let db = accessDB(dbPath);
+  let sql = `INSERT INTO matches VALUES ('${matchid}'`;
+  players.forEach(player => {
+    const e = (typeof player === 'object') ? JSON.stringify(player) : player;
+    sql += `, '${e}'`;
+  });
+  sql += ')';
+  db.exec(sql, (err) => {if (err) console.error(err);});
+  db.close();
+}
+
+/**
+ * Modifies match entry
+ * @param {String} dbPath 
+ * @param {String} matchid
+ * @param {String} attribute 
+ * @param {String} value 
+ */
+const modifyMatch = (dbPath, matchid, attribute, value) => {
+  let db = accessDB(dbPath);
+  const e = (typeof value === 'object') ? JSON.stringify(value) : value;
+  db.exec(
+    `UPDATE matches SET ${attribute} = '${e}' WHERE matchid = '${matchid}'`,
+    (err) => {if (err) console.error(err);}
+  );
+  db.close();
+}
+
+/**
+ * Gets match entry for attribute
+ * @param {String} dbPath 
+ * @param {String} matchid 
+ * @param {String} attribute 
+ * @return {value}
+ */
+const getMatch = (dbPath, matchid, attribute) => {
+  const db = accessDB(dbPath);
+  return new Promise((resolve, reject) => {
+		db.serialize(() => {
+			db.get(`SELECT ${attribute} FROM matches WHERE matchid = '${matchid}'`, [], (err, rows) => {
+				if (err) reject(err);
+				resolve(rows);
+			});
+		});
+	});
+}
+
+/**
+ * Gets match entry
+ * @param {String} dbPath 
+ * @param {String} matchid 
+ * @returns {value}
+ */
+const getAllMatch = (dbPath, matchid) => {
+  let db = accessDB(dbPath);
+  return new Promise((resolve, reject) => {
+		db.serialize(() => {
+			db.get(`SELECT * FROM matches WHERE matchid = '${matchid}'`, [], (err, rows) => {
+				if (err) reject(err);
+				resolve(rows);
+			});
+		});
+	});
+}
+
 module.exports = {
   createDB: (dbPath) => createDB(dbPath),
   accessDB: (dbPath) => accessDB(dbPath),
@@ -132,5 +211,9 @@ module.exports = {
   modifyPlayer: (dbPath, discordid, attribute, value) => modifyPlayer(dbPath, discordid, attribute, value),
   getPlayer: (dbPath, discordid, attribute) => getPlayer(dbPath, discordid, attribute),
   getAllPlayer: (dbPath, discordid) => getAllPlayer(dbPath, discordid),
+  registerMatch: (dbPath, matchid, players) => registerMatch(dbPath, matchid, players),
+  modifyMatch: (dbPath, matchid, attribute, value) => modifyMatch(dbPath, matchid, attribute, value),
+  getMatch: (dbPath, matchid, attribute) => getMatch(dbPath, matchid, attribute),
+  getAllMatch: (dbPath, matchid) => getAllMatch(dbPath, matchid),
 };
 

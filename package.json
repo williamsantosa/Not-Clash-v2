@@ -18,7 +18,8 @@
   "homepage": "https://github.com/williamsantosa/Not-Clash-v2#readme",
   "dependencies": {
     "discord.js": "^14.7.1",
-    "sqlite3": "^5.1.4"
+    "sqlite3": "^5.1.4",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "eslint": "^8.31.0"
