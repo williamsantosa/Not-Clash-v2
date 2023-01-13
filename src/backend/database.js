@@ -6,7 +6,7 @@ const sqlite3 = require('sqlite3');
  * Creates the sqlite3 database.
  * @param {String} dbPath 
  */
-function createDB(dbPath) {
+const createDB = (dbPath) => {
   let db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
       console.error(`Error creating ${dbPath} with read and write permissions. Error message below.`);
