@@ -69,7 +69,7 @@ const teamSort = (players, n) => {
  * @param {Array} players List containing player objects 
  * @param {String} option Option of what kind of sort they do 
  */
-const leagueSort = (players, option='none') => {
+const leagueSort = (players, option='') => {
   if (players.length !== 10) return;
 
   const teams = generateTeams(2);
@@ -83,21 +83,20 @@ const leagueSort = (players, option='none') => {
       teams['0'].push({
         player: player0, 
         role: roles0[Math.floor(i/2)], 
-        elo: player0.elo,
       });
       teams['1'].push({
         player: player1, 
         role: roles1[Math.floor(i/2)], 
-        elo: player1.elo,
       });
     }
+  } else if (option === 'role') {
+    // add code for role option, try to make elo relatively equal
   } else {
     const shuffledPlayers = players.sort(() => Math.random() - 0.5);
     for (const [i, player] of shuffledPlayers.entries()) {
       teams[`${i % 2}`].push({
         player: player, 
         role: Math.floor(i / 2), 
-        elo: player.elo,
       });
     }
   }
