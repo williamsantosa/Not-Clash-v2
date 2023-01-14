@@ -75,6 +75,22 @@ const leagueSort = (players, option='none') => {
   const teams = generateTeams(2);
   if (option === 'elo') {
     const sortedPlayers = players.sort(player => player.elo);
+    const roles0 = [0,1,2,3,4].sort(() => Math.random() - 0.5);
+    const roles1 = [0,1,2,3,4].sort(() => Math.random() - 0.5);
+    for (let i = 0; i < 10; i+=2) {
+      const player0 = sortedPlayers[`${i}`];
+      const player1 = sortedPlayers[`${i+1}`];
+      teams['0'].push({
+        player: player0, 
+        role: roles0[Math.floor(i/2)], 
+        elo: player0.elo,
+      });
+      teams['1'].push({
+        player: player1, 
+        role: roles1[Math.floor(i/2)], 
+        elo: player1.elo,
+      });
+    }
   } else {
     const shuffledPlayers = players.sort(() => Math.random() - 0.5);
     for (const [i, player] of shuffledPlayers.entries()) {
