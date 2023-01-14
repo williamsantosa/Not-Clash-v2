@@ -38,27 +38,60 @@ const eloRating = (t0, t1, D, K, w) => {
 };
 
 /**
+ * Returns an object with teams number from 0 to n - 1
+ * @param {Number} n 
+ * @returns {Object}
+ */
+const generateTeams = (n) => {
+  const teams = {};
+  for (let i = 0; i < n; i++) {
+    teams[`${i}`] = [];
+  }
+  return teams;
+};
+
+/**
  * Returns teams with players
  * @param {Array} players List containing players
  * @param {Number} n Number of teams 
  * @returns {Object} {team# : [player]}
  */
 const teamSort = (players, n) => {
-  const teams = {};
-  for (const i = 0; i < n; i++) {
-    teams[`${i}`] = [];
-  }
+  const teams = generateTeams(n);
   for (const [i, player] of players.entries()) {
     teams[`${i % n}`].push(player);
   }
   return teams;
 };
 
-  
+/**
+ * Returns teams with players and their roles
+ * @param {Array} players List containing player objects 
+ * @param {String} option Option of what kind of sort they do 
+ */
+const leagueSort = (players, option='none') => {
+  if (players.length !== 10) return;
+
+  const teams = generateTeams(2);
+  if (option === 'elo') {
+    const sortedPlayers = players.sort(player => player.elo);
+  } else {
+    const shuffledPlayers = players.sort(() => Math.random() - 0.5);
+    for (const [i, player] of shuffledPlayers.entries()) {
+      teams[`${i % 2}`].push({
+        player: player, 
+        role: Math.floor(i / 2), 
+        elo: player.elo,
+      });
+    }
+  }
+  return teams;
+};
 
 module.exports = {
   probabilityWinning: (t0, t1, D) => probabilityWinning(t0, t1, D),
   pConfidence: (n) => pConfidence(n),
   eloRating: (t0, t1, D, K, w) => eloRating(t0, t1, D, K, w),
   teamSort: (players, n) => teamSort(players, n),
+  leagueSort: (players, option) => leagueSort(players, option),
 };
