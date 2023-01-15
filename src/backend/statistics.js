@@ -51,6 +51,25 @@ const generateTeams = (n) => {
 };
 
 /**
+ * Returns count of rows
+ * @param {Array} players 
+ * @returns {Array}
+ */
+const countRoles = (players) => {
+  const countPrimaryRoles = {};
+  const countSecondaryRoles = {};
+  for (let i = 0; i < 5; i++) {
+    countPrimaryRoles[`${i}`] = 0;
+    countSecondaryRoles[`${i}`] = 0;
+  }
+  for (const player of players) {
+    countPrimaryRoles[`${player.primaryrole}`] += 1;
+    countSecondaryRoles[`${player.secondaryrole}`] += 1;
+  }
+  return [countPrimaryRoles, countSecondaryRoles];
+}
+
+/**
  * Returns teams with players
  * @param {Array} players List containing players
  * @param {Number} n Number of teams 
@@ -66,7 +85,7 @@ const teamSort = (players, n) => {
 
 /**
  * Returns teams with players and their roles
- * @param {Array} players List containing player objects 
+ * @param {Array} players List containing player objec ts 
  * @param {String} option Option of what kind of sort they do 
  */
 const leagueSort = (players, option='') => {
@@ -90,8 +109,58 @@ const leagueSort = (players, option='') => {
       });
     }
   } else if (option === 'role') {
-    // add code for role option, try to make elo relatively equal
-  } else {
+    const sortedPlayers = players.sort(player => player.elo);
+    const roles = {
+      '0': [false, false, false, false, false], 
+      '1': [false, false, false, false, false],
+    }
+    
+    let currTeam = 0;
+    for (const [i, player] of sortedPlayers.entries()) {
+      if (!player.primaryrole || roles[`${currTeam}`][player.primaryrole]) {
+        i = (i + 1) % player.length;
+        continue;
+      }
+
+      teams[`${currTeam}`].push({
+        player: player,
+        role: player.primaryrole,
+      });
+      
+      sortedPlayers.splice(i, 1);
+      roles[`${currTeam}`][player.primaryrole] = true;
+      currTeam = (currTeam === 1) ? 0 : 1;
+    }
+
+    for (const [i, player] of sortedPlayers.entries()) {
+      if (!player.secondaryrole || roles[`${currTeam}`][player.secondaryrole]) {
+        i = (i + 1) % player.length;
+        continue;
+      }
+
+      teams[`${currTeam}`].push({
+        player: player,
+        role: player.secondaryrole,
+      });
+      
+      sortedPlayers.splice(i, 1);
+      roles[`${currTeam}`][player.secondaryrole] = true;
+      currTeam = (currTeam === 1) ? 0 : 1;
+    }
+
+    while (sortedPlayers.length > 0) {
+      const player = sortedPlayers[0];
+      if (teams[`${currTeam}`].length < 5) {
+        const currrole = roles[`${currTeam}`].findIndex(e => e === true);
+        teams[`${currTeam}`].push({
+          player: player,
+          role: currrole,
+        });
+        sortedPlayers.splice(0, 1);
+      }
+      currTeam = (currTeam === 1) ? 0 : 1;
+    }
+  } else { // randomly assign
     const shuffledPlayers = players.sort(() => Math.random() - 0.5);
     for (const [i, player] of shuffledPlayers.entries()) {
       teams[`${i % 2}`].push({
