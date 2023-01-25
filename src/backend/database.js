@@ -18,6 +18,7 @@ const createDB = (dbPath) => {
 
   // player# is stored as JSON string with properties 
   // {discordid: string, team: int, role: int, elochange: int}
+  // roles: [0 - 5] = [top, jungle, mid, bottom, support, fill]
   db.exec(`
   CREATE TABLE players (
     discordid TEXT NOT NULL PRIMARY KEY, 
