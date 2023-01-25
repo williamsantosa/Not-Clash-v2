@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { createRollEmbed, color } = require('../misc/embeds.js');
+const { createRollEmbed } = require('../misc/embeds.js');
+const { color } = require('../misc/constants.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
