@@ -7,9 +7,6 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('leaderboard')
     .setDescription('Displays the leaderboard.')
-    .addUserOption(option => 
-      option.setName('player')
-        .setDescription('Player to jump to on the leaderboard.'))
     .addNumberOption(option =>
       option.setName('n1')
         .setDescription('Up to rank / start at rank.'))
@@ -17,7 +14,6 @@ module.exports = {
       option.setName('n2')
         .setDescription('Last rank.')),
   async execute(interaction) {
-    const player = interaction.options.getUser('player');
     const players = db.getAllPlayers(dbPath, 'elo');
     const n1 = interaction.options.getNumber('n1');
 		const n2 = interaction.options.getNumber('n2');
