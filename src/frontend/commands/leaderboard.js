@@ -2,6 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 const { createLeaderboardEmbed, createErrorEmbed } = require('../misc/embeds.js');
 const { dbPath } = require('../misc/constants.js');
 const db = require('../../backend/database.js');
+const { leaderboardComponents } = require('../misc/components.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,17 +17,7 @@ module.exports = {
     players.then(async res => {
       await interaction.reply({
         embeds: [createLeaderboardEmbed(res, 0, (res.length <= 10) ? res.length : 10)],
-        components: [new ActionRowBuilder()
-          .addComponents(
-            new ButtonBuilder()
-              .setCustomId('left')
-              .setLabel('Left')
-              .setStyle(ButtonStyle.Primary),
-            new ButtonBuilder()
-              .setCustomId('right')
-              .setLabel('Right')
-              .setStyle(ButtonStyle.Primary)
-        )]
+        components: [leaderboardComponents()]
       });
     })
     .catch(async err => {
