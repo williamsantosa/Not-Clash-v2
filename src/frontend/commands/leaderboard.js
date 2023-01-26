@@ -2,7 +2,6 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 const { createLeaderboardEmbed, createErrorEmbed } = require('../misc/embeds.js');
 const { dbPath } = require('../misc/constants.js');
 const db = require('../../backend/database.js');
-const { leaderboardComponents } = require('../misc/components.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -10,14 +9,29 @@ module.exports = {
     .setDescription('Displays the leaderboard.')
     .addUserOption(option => 
       option.setName('player')
-        .setDescription('Player to jump to on the leaderboard.')),
+        .setDescription('Player to jump to on the leaderboard.'))
+    .addNumberOption(option =>
+      option.setName('n1')
+        .setDescription('Up to rank / start at rank.'))
+    .addNumberOption(option =>
+      option.setName('n2')
+        .setDescription('Last rank.')),
   async execute(interaction) {
     const player = interaction.options.getUser('player');
     const players = db.getAllPlayers(dbPath, 'elo');
+    const n1 = interaction.options.getNumber('n1');
+		const n2 = interaction.options.getNumber('n2');
     players.then(async res => {
+      let start = 0
+      let end = res.length;
+      if (n1 && n2) {
+        start = (n1 <= end && n1 > start) ? n1 : start;
+        end = (end > start && n1 <= n2 && n2 <= end) ? n2 : end;
+      } else if (n1 && !n2) {
+        end = (n1 < end && n1 > start) ? n1 : end;
+      }
       await interaction.reply({
-        embeds: [createLeaderboardEmbed(res, 0, (res.length <= 10) ? res.length : 10)],
-        components: [leaderboardComponents()]
+        embeds: [createLeaderboardEmbed(res, start, end)],
       });
     })
     .catch(async err => {

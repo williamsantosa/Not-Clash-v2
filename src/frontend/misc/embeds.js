@@ -69,7 +69,6 @@ const createLeaderboardEmbed = (players, start, end) => {
   const retVal = new EmbedBuilder()
     .setColor(color.orange)
     .setTitle(`Leaderboard`)
-    .setDescription(`Rank ${start+1} - ${end}`)
     .setTimestamp()
     .setFooter({text: `Statistics for rank ${start+1} - ${end}`});
   for (let i = start; i < end; i++) {
