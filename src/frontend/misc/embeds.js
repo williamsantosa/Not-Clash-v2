@@ -65,10 +65,29 @@ const createStatsEmbed = (id, elo, wins, games, primaryrole, secondaryrole) => {
     .setFooter({text: `Statistics for id: ${id}`})
 };
 
+const createLeaderboardEmbed = (players, start, end) => {
+  const retVal = new EmbedBuilder()
+    .setColor(color.orange)
+    .setTitle(`Leaderboard`)
+    .setDescription(`Rank ${start+1} - ${end}`)
+    .setTimestamp()
+    .setFooter({text: `Statistics for rank ${start+1} - ${end}`});
+  for (let i = start; i < end; i++) {
+    const player = players[i];
+    retVal.addFields(
+      {name: `Rank ${i+1}`, value: `<@${player.discordid}>`, inline: true},
+      {name: `Elo`, value: `${player.elo} / ${player.wins} (${Math.round(player.wins * 100/player.games)}%)`, inline: true},
+      {name: `Primary Role`, value: `${roles[player.primaryrole].charAt(0).toUpperCase() + roles[player.primaryrole].slice(1)}`, inline: true}
+    );
+  }
+  return retVal;
+};
+
 module.exports = {
   createErrorEmbed: (text1, text2) => createErrorEmbed(text1, text2),
   createRollEmbed: (text1, text2, color) => createRollEmbed(text1, text2, color),
   createRegisterEmbed: (playerid, role1, role2) => createRegisterEmbed(playerid, role1, role2),
   createRoleEmbed: (player, role1, role2) => createRoleEmbed(player, role1, role2),
-  createStatsEmbed: (id, elo, wins, games, primaryrole, secondaryrole) => createStatsEmbed(id, elo, wins, games, primaryrole, secondaryrole)
+  createStatsEmbed: (id, elo, wins, games, primaryrole, secondaryrole) => createStatsEmbed(id, elo, wins, games, primaryrole, secondaryrole),
+  createLeaderboardEmbed: (players, start, end) => createLeaderboardEmbed(players, start, end)
 };

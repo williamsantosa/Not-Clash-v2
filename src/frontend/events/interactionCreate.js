@@ -3,6 +3,17 @@ const { Events } = require('discord.js');
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
+		// Execute left and right on leaderboard
+
+		const filter = i => i.customId === 'left';
+		const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
+		collector.on('collect', async i => {
+			await i.update({ content: 'A button was clicked!', components: [] });
+		});
+		collector.on('end', collected => console.log(`Collected ${collected.size} items`));
+
+		// Execute slash commands
+
 		if (!interaction.isChatInputCommand()) return;
 
 		const command = interaction.client.commands.get(interaction.commandName);

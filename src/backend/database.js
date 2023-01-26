@@ -72,7 +72,7 @@ const accessDB = (dbPath) => {
 const registerPlayer = (dbPath, discordid) => {
   let db = accessDB(dbPath);
   db.exec(
-    `INSERT INTO players VALUES ('${discordid}', 1000, 0, 0, 0, 0)`,
+    `INSERT INTO players VALUES ('${discordid}', 1000, 0, 0, 5, 5)`,
     (err) => {if (err) console.error(err);}
   );
   db.close();
@@ -124,6 +124,43 @@ const getAllPlayer = (dbPath, discordid) => {
   return new Promise((resolve, reject) => {
 		db.serialize(() => {
 			db.get(`SELECT * FROM players WHERE discordid = '${discordid}'`, [], (err, rows) => {
+				if (err) reject(err);
+				resolve(rows);
+			});
+		});
+	});
+}
+
+/**
+ * Gets column from players
+ * @param {String} dbPath 
+ * @param {String} discordid 
+ * @returns {value}
+ */
+const getColumnPlayers = (dbPath, column) => {
+  let db = accessDB(dbPath);
+  return new Promise((resolve, reject) => {
+		db.serialize(() => {
+			db.all(`SELECT ${column} FROM players`, [], (err, rows) => {
+				if (err) reject(err);
+				resolve(rows);
+			});
+		});
+	});
+}
+
+/**
+ * Gets all from players
+ * @param {String} dbPath 
+ * @param {String} attribute
+ * @returns {value}
+ */
+const getAllPlayers = (dbPath, attribute='') => {
+  let db = accessDB(dbPath);
+  return new Promise((resolve, reject) => {
+		db.serialize(() => {
+      const sql = (attribute) ? `SELECT * FROM players ORDER BY ${attribute} DESC` : `SELECT * FROM players`;
+			db.all(sql, [], (err, rows) => {
 				if (err) reject(err);
 				resolve(rows);
 			});
@@ -205,6 +242,43 @@ const getAllMatch = (dbPath, matchid) => {
 	});
 }
 
+/**
+ * Gets column from matches
+ * @param {String} dbPath 
+ * @param {String} discordid 
+ * @returns {value}
+ */
+const getColumnMatches = (dbPath, column) => {
+  let db = accessDB(dbPath);
+  return new Promise((resolve, reject) => {
+		db.serialize(() => {
+			db.all(`SELECT ${column} FROM matches`, [], (err, rows) => {
+				if (err) reject(err);
+				resolve(rows);
+			});
+		});
+	});
+}
+
+/**
+ * Gets all from matches
+ * @param {String} dbPath 
+ * @param {String} attribute
+ * @returns {value}
+ */
+const getAllMatches = (dbPath, attribute='') => {
+  let db = accessDB(dbPath);
+  return new Promise((resolve, reject) => {
+		db.serialize(() => {
+      const sql = (attribute) ? `SELECT * FROM matches ORDER BY ${attribute} DESC` : `SELECT * FROM matches`;
+			db.all(sql, [], (err, rows) => {
+				if (err) reject(err);
+				resolve(rows);
+			});
+		});
+	});
+}
+
 module.exports = {
   createDB: (dbPath) => createDB(dbPath),
   accessDB: (dbPath) => accessDB(dbPath),
@@ -212,9 +286,13 @@ module.exports = {
   modifyPlayer: (dbPath, discordid, attribute, value) => modifyPlayer(dbPath, discordid, attribute, value),
   getPlayer: (dbPath, discordid, attribute) => getPlayer(dbPath, discordid, attribute),
   getAllPlayer: (dbPath, discordid) => getAllPlayer(dbPath, discordid),
+  getColumnPlayers: (dbPath, column) => getColumnPlayers(dbPath, column),
+  getAllPlayers: (dbPath, attribute) => getAllPlayers(dbPath, attribute),
   registerMatch: (dbPath, matchid, players) => registerMatch(dbPath, matchid, players),
   modifyMatch: (dbPath, matchid, attribute, value) => modifyMatch(dbPath, matchid, attribute, value),
   getMatch: (dbPath, matchid, attribute) => getMatch(dbPath, matchid, attribute),
   getAllMatch: (dbPath, matchid) => getAllMatch(dbPath, matchid),
+  getColumnMatches: (dbPath, column) => getColumnMatches(dbPath, column),
+  getAllMatches: (dbPath, attribute) => getAllMatches(dbPath, attribute)
 };
 

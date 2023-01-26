@@ -14,7 +14,8 @@ module.exports = {
         .setAuthor({name: 'William Santosa (ancanis#0715)', url: 'https://github.com/williamsantosa'})
         .setDescription('Discord bot that facilitates League of Legends custom matches and stores player and match information in a database. '
         + 'Improved version of prior instances of the Not Clash v0/v1 bot. Written using Node.js and discord.js. ' +
-        'For bot information, run \`/info\`, for help run \`/help\`, and to see all commands run \`/commands\`.' 
+        'For bot information, run \`/info\`, for help run \`/help\`, and to see all commands run \`/commands\`.\n\n' +
+        'Community/support server link: https://discord.gg/VzWH8cyMmf'
         )
       ],
       components: [new ActionRowBuilder()
