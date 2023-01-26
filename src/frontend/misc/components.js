@@ -23,17 +23,17 @@ const createStartSelectComponent = () => {
         .addOptions(
           {
             label: 'Random',
-            description: 'Sorts players randomly into a team.',
+            description: 'Sort players randomly.',
             value: 'random'
           },
           {
             label: 'Elo',
-            description: 'Sorts players by Elo.',
+            description: 'Sort players by Elo.',
             value: 'elo'
           },
           {
             label: 'Role',
-            description: 'Sorts players by role.',
+            description: 'Sort players by role.',
             value: 'role'
           }
         )

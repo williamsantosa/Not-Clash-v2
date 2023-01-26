@@ -1,6 +1,4 @@
 const { Events } = require('discord.js');
-const { createLeaderboardComponents } = require('../misc/components');
-const { createLeaderboardEmbed } = require('../misc/embeds');
 const wait = require('node:timers/promises').setTimeout;
 const db = require('../../backend/database');
 const { dbPath } = require('../misc/constants');
@@ -14,10 +12,6 @@ module.exports = {
 			// To get a command, make it so there is a command called 'start' in commands folder,
 			// add data but do not make it execute anything. Then follow the guide above to make it
 			// actually reply to the message.
-
-			if (interaction.commandName === 'start') {
-				
-			}
 		}
 
 		// Execute slash commands

@@ -11,7 +11,7 @@ const createErrorEmbed = (text1, text2) => {
 
 const createRollEmbed = (text1, text2, color) => {
   return new EmbedBuilder()
-    .setColor(color)
+    .setColor(color.green)
     .setTitle(text1)
     .setDescription(text2)
     .setTimestamp();
@@ -19,7 +19,7 @@ const createRollEmbed = (text1, text2, color) => {
 
 const createRegisterEmbed = (player, role1, role2) => {
   const retVal = new EmbedBuilder()
-    .setColor(color.blue)
+    .setColor(color.green)
     .setTitle(`Succesfully registered ${player.username}#${player.discriminator}!`)
     .setTimestamp()
     .setFooter({text: `Registered id: ${player.id}`});
@@ -35,7 +35,7 @@ const createRegisterEmbed = (player, role1, role2) => {
 
 const createRoleEmbed = (player, role1, role2) => {
   const retVal = new EmbedBuilder()
-    .setColor(color.blue)
+    .setColor(color.green)
     .setTitle(`Succesfully set roles for ${player.username}#${player.discriminator}.`)
     .setTimestamp()
     .setFooter({text: `Roles set for id: ${player.id}`});
@@ -82,11 +82,19 @@ const createLeaderboardEmbed = (players, start, end) => {
   return retVal;
 };
 
+const createStartSelectEmbed = () => {
+  return new EmbedBuilder()
+    .setColor(color.blue)
+    .setTitle('Select matchmaking type.')
+    .setDescription('Choose from random, elo, and role.');
+};
+
 module.exports = {
   createErrorEmbed: (text1, text2) => createErrorEmbed(text1, text2),
   createRollEmbed: (text1, text2, color) => createRollEmbed(text1, text2, color),
   createRegisterEmbed: (playerid, role1, role2) => createRegisterEmbed(playerid, role1, role2),
   createRoleEmbed: (player, role1, role2) => createRoleEmbed(player, role1, role2),
   createStatsEmbed: (id, elo, wins, games, primaryrole, secondaryrole) => createStatsEmbed(id, elo, wins, games, primaryrole, secondaryrole),
-  createLeaderboardEmbed: (players, start, end) => createLeaderboardEmbed(players, start, end)
+  createLeaderboardEmbed: (players, start, end) => createLeaderboardEmbed(players, start, end),
+  createStartSelectEmbed: () => createStartSelectEmbed()
 };
