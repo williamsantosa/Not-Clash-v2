@@ -20,7 +20,7 @@ module.exports = {
         .setDescription('Winning team. Either 1 or 2.')
         .setRequired(true)),
   async execute(interaction) {
-    const matchid = interaction.options.getString('matchid');
+    const matchid = interaction.options.getString('matchid').trim();
     const team = interaction.options.getNumber('team');
     if (![1,2].includes(team)) {
       await interaction.reply({embeds: [createErrorEmbed('Invalid input team.', `Inputted team value of ${team}.`)]});
@@ -71,7 +71,7 @@ module.exports = {
               db.modifyPlayer(dbPath, player.discordid, 'wins', player.wins + 1);
             }
           }
-          await interaction.editReply({embeds: [createFinishEmbed(matchid, team1, team2, winteam)]});
+          await interaction.editReply({embeds: [createFinishEmbed(matchid, team1, team2, diff1, diff2, winteam)]});
         });
     });
   }

@@ -56,7 +56,7 @@ const createStatsEmbed = (id, elo, wins, games, primaryrole, secondaryrole) => {
     .setTitle('Stats')
     .setDescription(`Stats for <@${id}>`)
     .addFields(
-      { name: 'Elo', value: `${elo}`},
+      { name: 'Elo', value: `${Math.round(elo)}`},
       { name: 'Wins', value: `${wins} (${Math.round(wins * 100/games)}%)`},
       { name: 'Total Games', value: `${games}`},
       { name: 'Primary Role', value: `${roles[primaryrole].charAt(0).toUpperCase() + roles[primaryrole].slice(1)}`},
@@ -107,22 +107,45 @@ const createMatchEmbed = (teams, matchid) => {
     .setColor(color.orange)
     .addFields(
       {
-        name: `Team 1 (${team1elo} / ${st.probabilityWinning(team1elo, team2elo, D) * 100}%)\n`,
+        name: `Team 1 (${team1elo} / ${Math.round(st.probabilityWinning(team1elo, team2elo, D) * 100)}%)\n`,
         value: desc1,
       },
       {
-        name: `Team 2 (${team2elo} / ${st.probabilityWinning(team2elo, team1elo, D) * 100}%)\n`,
+        name: `Team 2 (${team2elo} / ${Math.round(st.probabilityWinning(team2elo, team1elo, D) * 100)}%)\n`,
         value: desc2,
       },
     )
     .setTimestamp()
-    .setFooter({text: `id: ${matchid}`});
+    .setFooter({text: `${matchid}`});
 };
 
-const createFinishEmbed = (matchid, team1, team2, teamwin) => {
-  return new EmbedBuilder()
+const createFinishEmbed = (matchid, team1, team2, diff1, diff2, winteam) => {
+  let desc1 = '';
+  let desc2 = '';
+  for (let i = 0; i < 5; i++) {
+    const role = `${roles[i].charAt(0).toUpperCase() + roles[i].slice(1)}`;
+    const p1 = `<@${team1[i].discordid}>`;
+    const p2 = `<@${team2[i].discordid}>`;
+    desc1 += `${role}: ${p1}\n`;
+    desc2 += `${role}: ${p2}\n`;
+  }
+
+  const retVal = new EmbedBuilder()
     .setColor(color.green)
-    .setTitle('hi');
+    .setTitle(`Updated Match`)
+    .addFields(
+      {
+        name: `Team 1 (${(winteam === 0) ? '+' : '-'}${Math.round(diff1)})`,
+        value: desc1,
+      },
+      {
+        name: `Team 2 (${(winteam === 1) ? '+' : '-'}${Math.round(diff2)})`,
+        value: desc2,
+      },
+    )
+    .setTimestamp()
+    .setFooter({text: `${matchid}`});
+  return retVal;
 };
 
 module.exports = {
@@ -134,5 +157,5 @@ module.exports = {
   createLeaderboardEmbed: (players, start, end) => createLeaderboardEmbed(players, start, end),
   createStartSelectEmbed: () => createStartSelectEmbed(),
   createMatchEmbed: (teams, matchid) => createMatchEmbed(teams, matchid),
-  createFinishEmbed: (matchid, team1, team2, teamwin) => createFinishEmbed(matchid, team1, team2, teamwin)
+  createFinishEmbed: (matchid, team1, team2, diff1, diff2, winteam) => createFinishEmbed(matchid, team1, team2, diff1, diff2, winteam)
 };
