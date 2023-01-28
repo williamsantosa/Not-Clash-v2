@@ -23,13 +23,16 @@ module.exports = {
     const matchid = interaction.options.getString('matchid').trim();
     const team = interaction.options.getNumber('team');
     if (![1,2].includes(team)) {
-      await interaction.reply({embeds: [createErrorEmbed('Invalid input team.', `Inputted team value of ${team}.`)]});
+      await interaction.reply({embeds: [createErrorEmbed('Invalid team.', `Inputted team value: ${team}.`)]});
       return;
     }
     const matchinfo = db.getAllMatch(dbPath, matchid);
     matchinfo.then(async res => {
-      if (!res || [0,1].includes(res.winteam)) {
-        await interaction.reply({embeds: [createErrorEmbed('Invalid input matchid.', `Inputted matchid value of ${matchid}.`)]});
+      if (!res) {
+        await interaction.reply({embeds: [createErrorEmbed('Invalid matchid.', `Inputted nonexistent matchid value: ${matchid}.`)]});
+        return;
+      } else if ([0,1].includes(res.winteam)) {
+        await interaction.reply({embeds: [createErrorEmbed('Invalid matchid.', `Inputted finished matchid value: ${matchid}.`)]});
         return;
       }
       await interaction.deferReply();

@@ -12,11 +12,14 @@ module.exports = {
         .setDescription('MatchID to cancel.')
         .setRequired(true)),
   async execute(interaction) {
-    const matchid = interaction.options.getString('matchid');
+    const matchid = interaction.options.getString('matchid').trim();
     const matchinfo = db.getAllMatch(dbPath, matchid);
     matchinfo.then(async res => {
-      if (!res || [0,1].includes(res.winteam)) {
-        await interaction.reply({embeds: [createErrorEmbed('Invalid input matchid.', `Inputted matchid value of ${matchid}.`)]});
+      if (!res) {
+        await interaction.reply({embeds: [createErrorEmbed('Invalid matchid.', `Inputted nonexistent matchid value: ${matchid}.`)]});
+        return;
+      } else if ([0,1].includes(res.winteam)) {
+        await interaction.reply({embeds: [createErrorEmbed('Invalid matchid.', `Inputted finished matchid value: ${matchid}.`)]});
         return;
       }
       db.deleteMatch(dbPath, matchid);
