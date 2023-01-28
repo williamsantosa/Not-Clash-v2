@@ -148,6 +148,15 @@ const createFinishEmbed = (matchid, team1, team2, diff1, diff2, winteam) => {
   return retVal;
 };
 
+const createDeleteMatchEmbed = (matchid) => {
+  return new EmbedBuilder()
+    .setColor(color.green)
+    .setTitle(`Cancelled Match`)
+    .setDescription(`Cancelled match <${matchid}> succesfully.`)
+    .setTimestamp()
+    .setFooter({text: `${matchid}`});
+};
+
 module.exports = {
   createErrorEmbed: (text1, text2) => createErrorEmbed(text1, text2),
   createRollEmbed: (text1, text2, color) => createRollEmbed(text1, text2, color),
@@ -157,5 +166,6 @@ module.exports = {
   createLeaderboardEmbed: (players, start, end) => createLeaderboardEmbed(players, start, end),
   createStartSelectEmbed: () => createStartSelectEmbed(),
   createMatchEmbed: (teams, matchid) => createMatchEmbed(teams, matchid),
-  createFinishEmbed: (matchid, team1, team2, diff1, diff2, winteam) => createFinishEmbed(matchid, team1, team2, diff1, diff2, winteam)
+  createFinishEmbed: (matchid, team1, team2, diff1, diff2, winteam) => createFinishEmbed(matchid, team1, team2, diff1, diff2, winteam),
+  createDeleteMatchEmbed: (matchid) => createDeleteMatchEmbed(matchid)
 };

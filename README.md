@@ -10,10 +10,12 @@ Upgraded version of [Not Clash](https://github.com/williamsantosa/Not-Clash).
 2. Create `finish` slash command taking input matchid and winning team [X]
    1. Update database with who wins [X]
    2. Update player information [X]
-3. Create `swap` slash command taking input matchid, player1, player2 to swap
-4. Create `cancel` slash command taking input matchid to remove match from match history iff no winning team supplied
-5. (IN-BETWEEN) Create console log functions
-6. Create README.md
+3. Create `swap` slash command taking input matchid, player1, player2 to swap (use .find)
+4. Create `cancel` slash command taking input matchid to remove match from match history iff no winning team supplied [X]
+5. Create console log to know what is happening
+6. Add comments
+7. Complete commands.js and help.js
+8. Create README.md
 
 To choose the match details, can set customId to "selectUsers<matchType>" and check for the matchType using regex, sort of like an
 HTML link
