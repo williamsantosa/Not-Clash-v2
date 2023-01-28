@@ -3,6 +3,7 @@ const wait = require('node:timers/promises').setTimeout;
 const db = require('../../backend/database');
 const { dbPath } = require('../misc/constants');
 const { createMatchEmbed } = require('../misc/embeds');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -33,10 +34,11 @@ module.exports = {
 					})
 					.then(async res => {
 						Promise.all(res)
-							.then(async res => {
+							.then(async playersInfo => {
+								const matchid = uuidv4();
 								await interaction.reply({
 									ephemeral: false,
-									embeds: [createMatchEmbed(res)],
+									embeds: [createMatchEmbed(playersInfo, matchid)],
 									components: [],
 								});
 							});

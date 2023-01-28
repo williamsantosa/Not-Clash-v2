@@ -7,7 +7,7 @@
  * @param {*} D  Effect of difference on probability to win or lose (higher = less effect)
  */
 const probabilityWinning = (t0, t1, D) => {
-  return 1.0 / (1.0 * Math.pow(10.0, (t1 - t0) / D));
+  return 1 / (1 + Math.pow(10, (t1 - t0) / D));
 };
 
 /**
@@ -16,7 +16,7 @@ const probabilityWinning = (t0, t1, D) => {
  * @returns {Number} Confidence percent
  */
 const pConfidence = (n) => {
-  return 1.0 - Math.pow(Math.exp(1), -0.1 * n);
+  return 1 - Math.pow(Math.exp(1), -0.1 * n);
 };
 
 /**

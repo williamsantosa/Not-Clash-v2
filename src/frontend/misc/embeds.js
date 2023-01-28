@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { color, roles } = require('./constants.js');
 const st = require('../../backend/statistics');
-const { v4: uuidv4 } = require('uuid');
+const { D } = require('../../../config.json');
 
 const createErrorEmbed = (text1, text2) => {
   return new EmbedBuilder()
@@ -90,7 +90,7 @@ const createStartSelectEmbed = () => {
     .setDescription('Select 10 users to play in the match below.');
 };
 
-const createMatchEmbed = (players) => {
+const createMatchEmbed = (players, matchid) => {
   if (players.length !== 10) return;
 
   const teams = st.leagueSort(players);
@@ -108,21 +108,22 @@ const createMatchEmbed = (players) => {
     desc2 += `${role}: ${p2}\n`;
   }
 
+  const team1elo = Math.round(teams['0'].reduce((partialSum, e) => partialSum + e.player.elo, 0) / 5);
+  const team2elo = Math.round(teams['1'].reduce((partialSum, e) => partialSum + e.player.elo, 0) / 5);
   return new EmbedBuilder()
     .setColor(color.orange)
-    .setTitle(`Match`)
     .addFields(
       {
-        name: `Team 1 (${Math.round(teams['0'].reduce((partialSum, e) => partialSum + e.player.elo, 0) / 5)})\n`,
+        name: `Team 1 (${team1elo} / ${st.probabilityWinning(team1elo, team2elo, D) * 100}%)\n`,
         value: desc1,
       },
       {
-        name: `Team 2 (${Math.round(teams['1'].reduce((partialSum, e) => partialSum + e.player.elo, 0) / 5)})\n`,
+        name: `Team 2 (${team2elo} / ${st.probabilityWinning(team2elo, team1elo, D) * 100}%)\n`,
         value: desc2,
       },
     )
     .setTimestamp()
-    .setFooter({text: `id: ${uuidv4()}`});
+    .setFooter({text: `id: ${matchid}`});
 };
 
 module.exports = {
@@ -133,5 +134,5 @@ module.exports = {
   createStatsEmbed: (id, elo, wins, games, primaryrole, secondaryrole) => createStatsEmbed(id, elo, wins, games, primaryrole, secondaryrole),
   createLeaderboardEmbed: (players, start, end) => createLeaderboardEmbed(players, start, end),
   createStartSelectEmbed: () => createStartSelectEmbed(),
-  createMatchEmbed: (players) => createMatchEmbed(players),
+  createMatchEmbed: (players, matchid) => createMatchEmbed(players, matchid),
 };
