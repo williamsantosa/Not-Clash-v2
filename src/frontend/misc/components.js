@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ActionRow } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, UserSelectMenuBuilder } = require('discord.js');
 
 const createLeaderboardComponents = () => {
   return new ActionRowBuilder()
@@ -15,29 +15,16 @@ const createLeaderboardComponents = () => {
 }
 
 const createStartSelectComponent = () => {
-  return new ActionRowBuilder()
-    .addComponents(
-      new StringSelectMenuBuilder()
-        .setCustomId('selectStartOptions')
-        .setPlaceholder('No selection')
-        .addOptions(
-          {
-            label: 'Random',
-            description: 'Sort players randomly.',
-            value: 'random'
-          },
-          {
-            label: 'Elo',
-            description: 'Sort players by Elo.',
-            value: 'elo'
-          },
-          {
-            label: 'Role',
-            description: 'Sort players by role.',
-            value: 'role'
-          }
-        )
-    )
+  return [
+    new ActionRowBuilder()
+      .addComponents(
+        new UserSelectMenuBuilder()
+          .setCustomId('selectUsers')
+          .setPlaceholder('Select users')
+          .setMinValues(10)
+          .setMaxValues(10)
+      )
+  ];
 }
 
 module.exports = {

@@ -30,6 +30,7 @@ const createDB = (dbPath) => {
   );
   CREATE TABLE matches (
     matchid TEXT NOT NULL PRIMARY KEY,
+    winteam INT,
     player0 TEXT NOT NULL,
     player1 TEXT NOT NULL,
     player2 TEXT NOT NULL,

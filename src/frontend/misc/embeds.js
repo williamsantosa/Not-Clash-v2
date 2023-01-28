@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
-
 const { color, roles } = require('./constants.js');
+const st = require('../../backend/statistics');
+const { v4: uuidv4 } = require('uuid');
 
 const createErrorEmbed = (text1, text2) => {
   return new EmbedBuilder()
@@ -85,8 +86,43 @@ const createLeaderboardEmbed = (players, start, end) => {
 const createStartSelectEmbed = () => {
   return new EmbedBuilder()
     .setColor(color.blue)
-    .setTitle('Select matchmaking type.')
-    .setDescription('Choose from random, elo, and role.');
+    .setTitle('Select Menu')
+    .setDescription('Select 10 users to play in the match below.');
+};
+
+const createMatchEmbed = (players) => {
+  if (players.length !== 10) return;
+
+  const teams = st.leagueSort(players);
+  teams['0'] = teams['0'].sort(player => player.role);
+  teams['1'] = teams['1'].sort(player => player.role);
+
+  let desc1 = '';
+  let desc2 = '';
+
+  for (let i = 0; i < 5; i++) {
+    const role = `${roles[i].charAt(0).toUpperCase() + roles[i].slice(1)}`;
+    const p1 = `<@${teams['0'][i].player.discordid}>`;
+    const p2 = `<@${teams['1'][i].player.discordid}>`;
+    desc1 += `${role}: ${p1}\n`;
+    desc2 += `${role}: ${p2}\n`;
+  }
+
+  return new EmbedBuilder()
+    .setColor(color.orange)
+    .setTitle(`Match`)
+    .addFields(
+      {
+        name: `Team 1 (${Math.round(teams['0'].reduce((partialSum, e) => partialSum + e.player.elo, 0) / 5)})\n`,
+        value: desc1,
+      },
+      {
+        name: `Team 2 (${Math.round(teams['1'].reduce((partialSum, e) => partialSum + e.player.elo, 0) / 5)})\n`,
+        value: desc2,
+      },
+    )
+    .setTimestamp()
+    .setFooter({text: `id: ${uuidv4()}`});
 };
 
 module.exports = {
@@ -96,5 +132,6 @@ module.exports = {
   createRoleEmbed: (player, role1, role2) => createRoleEmbed(player, role1, role2),
   createStatsEmbed: (id, elo, wins, games, primaryrole, secondaryrole) => createStatsEmbed(id, elo, wins, games, primaryrole, secondaryrole),
   createLeaderboardEmbed: (players, start, end) => createLeaderboardEmbed(players, start, end),
-  createStartSelectEmbed: () => createStartSelectEmbed()
+  createStartSelectEmbed: () => createStartSelectEmbed(),
+  createMatchEmbed: (players) => createMatchEmbed(players),
 };
