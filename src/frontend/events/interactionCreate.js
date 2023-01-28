@@ -1,31 +1,44 @@
 const { Events } = require('discord.js');
-const wait = require('node:timers/promises').setTimeout;
-const db = require('../../backend/database');
-const { dbPath } = require('../misc/constants');
-const { createMatchEmbed } = require('../misc/embeds');
 const { v4: uuidv4 } = require('uuid');
+const { dbPath } = require('../misc/constants');
+const { createMatchEmbed, createErrorEmbed } = require('../misc/embeds');
+
+const st = require('../../backend/statistics');
+const db = require('../../backend/database');
+
+const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
-		// Execute left and right on leaderboard
-		if (interaction.isUserSelectMenu()) {
-			// https://discordjs.guide/interactions/select-menus.html#building-and-sending-select-menus
-			// To get a command, make it so there is a command called 'start' in commands folder,
-			// add data but do not make it execute anything. Then follow the guide above to make it
-			// actually reply to the message.
 
+		// Execute UserSelectMenu
+		if (interaction.isUserSelectMenu()) {
+
+			// Command: selectUsers 
 			if (interaction.customId === 'selectUsers') {
+				if (interaction.values.length !== 10) {
+					await interaction.reply({embeds: createErrorEmbed('Invalid number of users.', `Selected ${interactions.values.length} users.`)})
+					return;
+				}
+
+				// State that bot is processing
+				await interaction.deferReply();
+
+				// Run queries for each of the players
 				const playersInfo = [];
 				for (let i = 0; i < interaction.values.length; i++) {
 					playersInfo.push(db.getAllPlayer(dbPath, interaction.values[i]));
 				}
+
+				// Once queries are processed, check if player exists
+				// If not, register player and get their updated values
 				Promise.all(playersInfo)
 					.then(async res => {
 						for (const [i, player] of res.entries()) {
 							if (!player) {
 								db.registerPlayer(dbPath, interaction.values[i]);
-								await wait(500);
+								await wait(2000);
 								const id = interaction.values[i];
 								res[i] = await db.getAllPlayer(dbPath, id);
 							};
@@ -35,10 +48,22 @@ module.exports = {
 					.then(async res => {
 						Promise.all(res)
 							.then(async playersInfo => {
+								// Sort teams
+								const teams = st.leagueSort(playersInfo);
+								for (const t of ['0', '1']) {
+									teams[t] = teams[t].sort(player => player.role);
+								}
+
+								// Register match and respond to message
 								const matchid = uuidv4();
-								await interaction.reply({
+								const ids = [];
+								for (const t of ['0', '1']) {
+									teams[t].forEach(e => ids.push(e.player.discordid));
+								}
+								db.registerMatch(dbPath, matchid, ids);
+								await interaction.editReply({
 									ephemeral: false,
-									embeds: [createMatchEmbed(playersInfo, matchid)],
+									embeds: [createMatchEmbed(teams, matchid)],
 									components: [],
 								});
 							});

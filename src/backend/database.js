@@ -30,7 +30,6 @@ const createDB = (dbPath) => {
   );
   CREATE TABLE matches (
     matchid TEXT NOT NULL PRIMARY KEY,
-    winteam INT,
     player0 TEXT NOT NULL,
     player1 TEXT NOT NULL,
     player2 TEXT NOT NULL,
@@ -40,7 +39,8 @@ const createDB = (dbPath) => {
     player6 TEXT NOT NULL,
     player7 TEXT NOT NULL,
     player8 TEXT NOT NULL,
-    player9 TEXT NOT NULL
+    player9 TEXT NOT NULL,
+    winteam INT
   );
   `, (err) => {if (err) console.error(err);}
   );
@@ -184,7 +184,7 @@ const registerMatch = (dbPath, matchid, players) => {
     const e = (typeof player === 'object') ? JSON.stringify(player) : player;
     sql += `, '${e}'`;
   });
-  sql += ')';
+  sql += ', -1)';
   db.exec(sql, (err) => {if (err) console.error(err);});
   db.close();
 }
@@ -280,6 +280,20 @@ const getAllMatches = (dbPath, attribute='') => {
 	});
 }
 
+/**
+ * Deletes matchid row from matches
+ * @param {String} dbPath 
+ * @param {String} matchid 
+ */
+const deleteMatch = (dbPath, matchid) => {
+  let db = accessDB(dbPath);
+  db.exec(
+    `DELETE FROM matches WHERE matchid = '${matchid}'`,
+    (err) => {if (err) console.error(err);}
+  );
+  db.close();
+}
+
 module.exports = {
   createDB: (dbPath) => createDB(dbPath),
   accessDB: (dbPath) => accessDB(dbPath),
@@ -294,6 +308,7 @@ module.exports = {
   getMatch: (dbPath, matchid, attribute) => getMatch(dbPath, matchid, attribute),
   getAllMatch: (dbPath, matchid) => getAllMatch(dbPath, matchid),
   getColumnMatches: (dbPath, column) => getColumnMatches(dbPath, column),
-  getAllMatches: (dbPath, attribute) => getAllMatches(dbPath, attribute)
+  getAllMatches: (dbPath, attribute) => getAllMatches(dbPath, attribute),
+  deleteMatch: (dbPath, matchid) => deleteMatch(dbPath, matchid)
 };
 

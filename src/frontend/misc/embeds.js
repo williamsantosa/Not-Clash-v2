@@ -90,16 +90,9 @@ const createStartSelectEmbed = () => {
     .setDescription('Select 10 users to play in the match below.');
 };
 
-const createMatchEmbed = (players, matchid) => {
-  if (players.length !== 10) return;
-
-  const teams = st.leagueSort(players);
-  teams['0'] = teams['0'].sort(player => player.role);
-  teams['1'] = teams['1'].sort(player => player.role);
-
+const createMatchEmbed = (teams, matchid) => {
   let desc1 = '';
   let desc2 = '';
-
   for (let i = 0; i < 5; i++) {
     const role = `${roles[i].charAt(0).toUpperCase() + roles[i].slice(1)}`;
     const p1 = `<@${teams['0'][i].player.discordid}>`;
@@ -134,5 +127,5 @@ module.exports = {
   createStatsEmbed: (id, elo, wins, games, primaryrole, secondaryrole) => createStatsEmbed(id, elo, wins, games, primaryrole, secondaryrole),
   createLeaderboardEmbed: (players, start, end) => createLeaderboardEmbed(players, start, end),
   createStartSelectEmbed: () => createStartSelectEmbed(),
-  createMatchEmbed: (players, matchid) => createMatchEmbed(players, matchid),
+  createMatchEmbed: (teams, matchid) => createMatchEmbed(teams, matchid),
 };
