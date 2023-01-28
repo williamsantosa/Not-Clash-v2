@@ -1,8 +1,8 @@
 const { Events } = require('discord.js');
 const { v4: uuidv4 } = require('uuid');
+
 const { dbPath } = require('../misc/constants');
 const { createMatchEmbed, createErrorEmbed } = require('../misc/embeds');
-
 const st = require('../../backend/statistics');
 const db = require('../../backend/database');
 

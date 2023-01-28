@@ -29,12 +29,17 @@ const pConfidence = (n) => {
  * @returns {Number} Updated ratings (team0 rating, team1 rating)
  */
 const eloRating = (t0, t1, D, K, w) => {
+  // wp = 0 if w == 1 else 1
+  // p1, p2 = prob(r1, r2, D), prob(r2, r1, D)
+  // rv1 = float(r1) + float(K) * (wp - p1)
+  // rv2 = float(r2) + float(K) * (wp - p2)
+  // return (int(rv1), int(rv2))
   const wp = (w === 0) ? 0 : 1;
-  const p0 = prob(t0, t1, D);
-  const p1 = prob(t1, t0, D);
+  const p0 = probabilityWinning(t0, t1, D);
+  const p1 = probabilityWinning(t1, t0, D);
   const rv0 = t0 + K * (wp - p0);
   const rv1 = t1 + K * (wp - p1);
-  return (rv0, rv1);
+  return [rv0, rv1];
 };
 
 /**

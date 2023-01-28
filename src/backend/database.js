@@ -184,7 +184,7 @@ const registerMatch = (dbPath, matchid, players) => {
     const e = (typeof player === 'object') ? JSON.stringify(player) : player;
     sql += `, '${e}'`;
   });
-  sql += ', -1)';
+  sql += ', 3)';
   db.exec(sql, (err) => {if (err) console.error(err);});
   db.close();
 }

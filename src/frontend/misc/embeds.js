@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, Embed } = require('discord.js');
 const { color, roles } = require('./constants.js');
 const st = require('../../backend/statistics');
 const { D } = require('../../../config.json');
@@ -119,6 +119,12 @@ const createMatchEmbed = (teams, matchid) => {
     .setFooter({text: `id: ${matchid}`});
 };
 
+const createFinishEmbed = (matchid, team1, team2, teamwin) => {
+  return new EmbedBuilder()
+    .setColor(color.green)
+    .setTitle('hi');
+};
+
 module.exports = {
   createErrorEmbed: (text1, text2) => createErrorEmbed(text1, text2),
   createRollEmbed: (text1, text2, color) => createRollEmbed(text1, text2, color),
@@ -128,4 +134,5 @@ module.exports = {
   createLeaderboardEmbed: (players, start, end) => createLeaderboardEmbed(players, start, end),
   createStartSelectEmbed: () => createStartSelectEmbed(),
   createMatchEmbed: (teams, matchid) => createMatchEmbed(teams, matchid),
+  createFinishEmbed: (matchid, team1, team2, teamwin) => createFinishEmbed(matchid, team1, team2, teamwin)
 };
