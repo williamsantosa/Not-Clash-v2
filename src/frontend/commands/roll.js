@@ -23,6 +23,7 @@ module.exports = {
 					`Generated from using values n1 = ${n1} and n2 = ${n2}`,
 					color.red,
 				)]});
+				console.log(`Responded with error.\nNo values supplied.`);
 			}
 			const val = Math.ceil(Math.random() * n1);
 			await interaction.reply({embeds: [createRollEmbed(
@@ -30,12 +31,14 @@ module.exports = {
 				`Generated from using values n1 = ${n1} and n2 = ${n2}`,
 				color.blue,
 			)]});
+			console.log(`Responded with createRollEmbed(${val}, text).`);
 		} else if (n1 > n2) {
 			await interaction.reply({embeds: [createRollEmbed(
 				`Invalid input. ${n1} > ${n2}`,
 				`Generated from using values n1 = ${n1} and n2 = ${n2}`,
-				color.blue,
+				color.red,
 			)]});
+			console.log(`Responded with error.\nInvalid input.`);
 		} else {
 			const val = Math.floor(Math.random() * (n2 - n1 + 1) ) + n1;
 			await interaction.reply({embeds: [createRollEmbed(
@@ -43,6 +46,7 @@ module.exports = {
 				`Generated from using values n1 = ${n1} and n2 = ${n2}`,
 				color.blue,
 			)]});
+			console.log(`Responded with createRollEmbed(${val}, text).`);
 		}
 	},
 };

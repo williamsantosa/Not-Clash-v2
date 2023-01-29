@@ -19,6 +19,7 @@ module.exports = {
           `Error displaying ${player.username}#${player.discriminator}.`, 
           `Player not found in database.`
         )]});
+        console.log(`Responded with error.\nPlayer ${player.username}#${player.discriminator} not found in database.`);
       } else {
         await interaction.reply({embeds: [createStatsEmbed(
           res.discordid, 
@@ -28,6 +29,7 @@ module.exports = {
           res.primaryrole, 
           res.secondaryrole
         )]});
+        console.log(`Responded with createStatsEmbed(${res.discordid}, ${res.elo}, ${res.wins}, ${res.games}, ${res.primaryrole}, ${res.secondaryrole}).`);
       }
     });
   }

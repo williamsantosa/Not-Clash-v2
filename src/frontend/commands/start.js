@@ -15,5 +15,6 @@ module.exports = {
       components: [...createStartSelectComponent()],
       ephemeral: true,
     });
+    console.log(`Responded with createStartSelectEmbed() and createStartSelectComponent().`);
   }
 };

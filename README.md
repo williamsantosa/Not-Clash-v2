@@ -10,7 +10,7 @@ Upgraded version of [Not Clash](https://github.com/williamsantosa/Not-Clash).
 2. Create `finish` slash command taking input matchid and winning team [X]
    1. Update database with who wins [X]
    2. Update player information [X]
-3. Create `swap` slash command taking input matchid, player1, player2 to swap (use .find)
+3. Create `swap` slash command taking input matchid, player1, player2 to swap (use .find) [X]
 4. Create `cancel` slash command taking input matchid to remove match from match history iff no winning team supplied [X]
 5. Create console log to know what is happening
 6. Add comments

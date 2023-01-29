@@ -14,10 +14,17 @@ module.exports = {
       option.setName('n2')
         .setDescription('Last rank.')),
   async execute(interaction) {
+    // Grab players information
+    console.log(`Getting players information...`);
     const players = db.getAllPlayers(dbPath, 'elo');
     const n1 = interaction.options.getNumber('n1');
 		const n2 = interaction.options.getNumber('n2');
+
+    // Process players
     players.then(async res => {
+      console.log('Finished get.');
+
+      // Set start and end points
       let start = 0
       let end = res.length;
       if (n1 && n2) {
@@ -26,13 +33,17 @@ module.exports = {
       } else if (n1 && !n2) {
         end = (n1 < end && n1 > start) ? n1 : end;
       }
+
+      // Reply
       await interaction.reply({
         embeds: [createLeaderboardEmbed(res, start, end)],
       });
+      console.log(`Responded with createLeaderboardEmbed(${res}, ${start}, ${end}).`);
     })
     .catch(async err => {
       console.log(err);
       await interaction.reply({embeds: [createErrorEmbed('Leaderboard error.', 'Error occurred while displaying leaderboard.')]});
+      console.log(`Responded with error.\nInternal server error.`);
     });
   }
 }
