@@ -1,4 +1,6 @@
 {
 	"TOKEN": "ENTER DISCORD BOT TOKEN HERE",
-	"clientId": "ENTER CLIENT ID HERE"
+	"clientId": "ENTER CLIENT ID HERE",
+	"D": 400,
+	"K": 32
 }
