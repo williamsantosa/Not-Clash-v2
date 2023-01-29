@@ -33,7 +33,13 @@ In project directory, run the following commands.
 
 ## How to start a Game
 
-
+1. Run `/start` command.
+   1. Select players to particpate in the game.
+   2. Match information should be displayed.
+2. To swap players, run `/swap player1 player2`.
+3. To finish match, run `/finish matchid team`.
+   1. Variable `matchid` can be found on the bottom left of the match embed.
+   2. Variable `team` is either 1 or 2, the team that won.
 
 ## Upgrades
 
@@ -89,12 +95,13 @@ Complete information can be seen by running `/help command_name` when bot is run
 
 Not Clash is an idea based off the original League of Legends event called "Clash" where teams of 5 players face off against one another in a bracket tournament. Thus, "Not Clash" borrows that idea and instead of a tournament, it facilitates League of Legends custom matches and stores player information into SQLite database.
 
-## Planned Features
+## Planned Features (ROADMAP)
 
-1. Choose type of matchmaking. 
+1. Update README with images.
+2. Choose type of matchmaking. 
    1. Plan: To choose the match details, set customId to "selectUsers<matchType>"
    2. Check for the matchType using regex (like HTML link)
-2. Display match history
+3. Display match history
    1. Overall match history
    2. Player match history
-3. Choose player to hop to in leaderboard
+4. Choose player to hop to in leaderboard
