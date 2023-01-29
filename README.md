@@ -8,7 +8,32 @@ Facilitates League of Legends matches and stores player and match information in
 
 1. Download [JavaScript](https://www.javascript.com/).
 2. Download [Node](https://nodejs.org/).
-3. 
+3. Clone/download [repository](https://github.com/williamsantosa/Not-Clash-v2).
+4. Configure config.json
+   1. TOKEN: `String: Discord bot token`
+      1. Go to [discord developer portal](https://discord.com/developers/applications).
+      2. Click application.
+      3. Click bot.
+      4. Under `TOKEN`, reset token and then save the resulting token to config.json.
+   2. clientId: `String: Discord bot client id`
+      1. Go to [discord developer portal](https://discord.com/developers/applications).
+      2. Click application.
+      3. Click OAuth2.
+      4. Under `CLIENT ID`, press copy.
+   3. D: `Int: Effect of difference on probability to win or lose, higher = less effect`
+   4. K: `Int: Maximum value a player's elo can change from one match`
+5. Run `npm install`
+
+## Starting the Bot
+
+In project directory, run the following commands.
+
+1. `node deploy-commands.js` to update the bot's commands.
+2. `node .` to start the bot.
+
+## How to start a Game
+
+
 
 ## Upgrades
 
@@ -19,6 +44,46 @@ Facilitates League of Legends matches and stores player and match information in
 5. New commands.
 6. Responses are more specific, terse, and offer more insight into statistics.
 7. Match history.
+
+## Commands
+
+Complete information can be seen by running `/help command_name` when bot is running.
+
+`cancel matchid`
+> Cancels an ongoing match.
+
+`commands`
+> Information about all commands in Not Clash v2 bot.
+
+`finish matchid team`
+> Completes match and updates player/match information.
+
+`help command`
+> Help message for Not Clash v2 bot.
+
+`info`
+> Information about the Not Clash v2 bot.
+
+`leaderboard [n1] [n2]`
+> Displays the leaderboard.
+
+`register [player] [primary] [secondary]`
+> Registers player to the database.
+
+`role [primary] [secondary]`
+> Changes user's role.
+
+`roll n1 [n2]`
+> Random number from 1 to n1 or from n1 to n2, inclusive.
+
+`start [type]`
+> Starts the League of Legends game.
+
+`stats [player]`
+> Display's player's stats.
+
+`swap matchid player1 player2`
+> Swaps two players in a match.
 
 ## Where "Not Clash" Came From
 
