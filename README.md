@@ -98,10 +98,16 @@ Not Clash is an idea based off the original League of Legends event called "Clas
 ## Planned Features (ROADMAP)
 
 1. Update README with images.
-2. Choose type of matchmaking. 
+2. Implement a queue with operations
+3. Choose type of matchmaking. 
    1. Plan: To choose the match details, set customId to "selectUsers<matchType>"
    2. Check for the matchType using regex (like HTML link)
-3. Display match history
+4. Display match history
    1. Overall match history
    2. Player match history
-4. Choose player to hop to in leaderboard
+5. Choose player to hop to in leaderboard
+
+## Known Errors
+
+1. Running two commands concurrently will result in database errors cause of locks...
+   1. Fix: Implement a queue in interactionCreate.js that pushes to a queue and then procesess it one by one.
