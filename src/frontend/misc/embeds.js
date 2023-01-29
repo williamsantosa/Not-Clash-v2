@@ -1,4 +1,4 @@
-const { EmbedBuilder, Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { color, roles } = require('./constants.js');
 const st = require('../../backend/statistics');
 const { D } = require('../../../config.json');

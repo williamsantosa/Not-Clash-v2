@@ -26,5 +26,6 @@ module.exports = {
         )
       ]
     });
+    console.log(`Responded with info embed.`);
   },
 };
