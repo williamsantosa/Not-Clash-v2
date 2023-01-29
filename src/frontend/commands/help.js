@@ -38,19 +38,24 @@ module.exports = {
     // Build return embed
     const retVal = new EmbedBuilder()
       .setColor(color.orange)
-      .setTitle(`${data.name}`)
+      .setDescription(data.description)
+      .setTitle(data.name)
       .setTimestamp();
   
-    let desc = `${data.description}\n\nUsage: \`${data.name}`;
+    let usage = `\`${data.name}`;
 
+    const options = [];
     for (let option of data.options) {
-      desc += (option.required) ? ` ${option.name}` : ` [${option.name}]`;
-      retVal.addFields(
+      usage += (option.required) ? ` ${option.name}` : ` [${option.name}]`;
+      options.push(
         { name: option.name, value: option.description},
       );
     }
 
-    retVal.setDescription(desc + '\`');
+    retVal.addFields(
+      { name: 'Usage', value: usage + `\``},
+      ...options
+    );
 
     // Reply
     await interaction.reply({embeds: [retVal]});
