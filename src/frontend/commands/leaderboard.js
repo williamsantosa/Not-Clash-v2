@@ -26,7 +26,7 @@ module.exports = {
 
       // Set start and end points
       let start = 0
-      let end = res.length;
+      let end = (res.length > 8) ? 8 : res.length;
       if (n1 && n2) {
         start = (n1 <= end && n1 > start) ? n1 : start;
         end = (end > start && n1 <= n2 && n2 <= end) ? n2 : end;
