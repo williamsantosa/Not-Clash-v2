@@ -95,6 +95,36 @@ Complete information can be seen by running `/help command_name` when bot is run
 
 Not Clash is an idea based off the original League of Legends event called "Clash" where teams of 5 players face off against one another in a bracket tournament. Thus, "Not Clash" borrows that idea and instead of a tournament, it facilitates League of Legends custom matches and stores player information into SQLite database.
 
+## Examples
+
+| ![](Media/start_1.png) |
+| :--: |
+| Start Match Command |
+
+| ![](Media/start_2.png) |
+| :--: |
+| User Selection Menu |
+
+| ![](Media/start_3.png) |
+| :--: |
+| Selecting 10 Users |
+
+| ![](Media/start_4.png) |
+| :--: |
+| Generated Match |
+
+| ![](Media/info_1.png) |
+| :--: |
+| Information Message |
+
+| ![](Media/leaderboard_1.png) |
+| :--: |
+| Leaderboard |
+
+| ![](Media/role_1.png) |
+| :--: |
+| Changing Role |
+
 ## Planned Features (ROADMAP)
 
 1. Update README with images.
